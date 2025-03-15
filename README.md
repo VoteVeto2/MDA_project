@@ -21,11 +21,12 @@ Additional cross-cutting initiatives support widening participation across Europ
 The CORDIS dataset consists of four main subsets:
 
 1. **HORIZON Projects**: Core project data including:
+   - Classification with **Euro**pean **Sci**ence **Voc**abulary (EuroSciVoc)
+   - Legal basis and topic information
    - Project identifiers and basic information
    - Participating organizations
-   - Legal basis and topic information
    - Project URLs
-   - Classification with European Science Vocabulary (EuroSciVoc)
+   
 
 2. **HORIZON Project Deliverables**: Metadata and links to deliverables
 
