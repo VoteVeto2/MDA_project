@@ -1,0 +1,101 @@
+projectID,euroSciVocCode,euroSciVocPath,euroSciVocTitle
+101116741,/29/97/543,/social sciences/political sciences/government systems,government systems
+101163161,/27/81/30021/30833628,"/agricultural sciences/agriculture, forestry, and fisheries/agriculture/grains and oilseeds",grains and oilseeds
+101163161,/23/43/251/48354418,/natural sciences/physical sciences/optics/microscopy,microscopy
+101163161,/23/43/257/761,/natural sciences/physical sciences/astronomy/astrochemistry,astrochemistry
+101163161,/29/89,/social sciences/law,law
+101163161,/23/43/251/1077,/natural sciences/physical sciences/optics/spectroscopy,spectroscopy
+101160499,/23/49/315/997/1613,/natural sciences/biological sciences/biochemistry/biomolecules/proteins,proteins
+101160499,/23/49/337/1021,/natural sciences/biological sciences/genetics/RNA,RNA
+101166905,/23/45/293/911,/natural sciences/earth and related environmental sciences/physical geography/cartography,cartography
+101166905,/23/43/257/759,/natural sciences/physical sciences/astronomy/astrophysics,astrophysics
+101166905,/23/43/257/775,/natural sciences/physical sciences/astronomy/physical cosmology,physical cosmology
+101162875,/23/43/257/771/1511,/natural sciences/physical sciences/astronomy/planetary sciences/planets,planets
+101162875,/25/73/453/58525161,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors",sensors
+101162875,/21/39/225,/medical and health sciences/clinical medicine/oncology,oncology
+101162875,/23/49/341,/natural sciences/biological sciences/microbiology,microbiology
+101167314,/23/43/257/767/1491,/natural sciences/physical sciences/astronomy/observational astronomy/gravitational waves,gravitational waves
+101167314,/23/43/257/759,/natural sciences/physical sciences/astronomy/astrophysics,astrophysics
+101167314,/23/43/257/775,/natural sciences/physical sciences/astronomy/physical cosmology,physical cosmology
+101165261,/31/113/613,/humanities/history and archaeology/history,history
+101114412,/21/35/159/649/1435,/medical and health sciences/basic medicine/pharmacology and pharmacy/drug resistance/multidrug resistance,multidrug resistance
+101114020,/21/39/695/53763899,/medical and health sciences/clinical medicine/gynaecology/reproductive medicine,reproductive medicine
+101114020,/29/101/553/1357,/social sciences/sociology/demography/fertility,fertility
+101114020,/29/91/523/1307,/social sciences/economics and business/business and management/business models,business models
+101114020,/21/39/697,/medical and health sciences/clinical medicine/obstetrics,obstetrics
+101114020,/21/39/203,/medical and health sciences/clinical medicine/embryology,embryology
+101114248,/31/107/587,/humanities/languages and literature/linguistics,linguistics
+101071749,/21/35/159/647,/medical and health sciences/basic medicine/pharmacology and pharmacy/pharmacokinetics,pharmacokinetics
+101071876,/25/73/453/58525161/44113014,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors/optical sensors",optical sensors
+101071876,/25/75/461/1239/1737/1829,/engineering and technology/mechanical engineering/vehicle engineering/aerospace engineering/aircraft/rotorcraft,rotorcraft
+101113634,/25/73/453/58525161/44113014,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors/optical sensors",optical sensors
+101114214,/21/35/153/629,/medical and health sciences/basic medicine/neurology/epilepsy,epilepsy
+101114169,/21/35/145,/medical and health sciences/basic medicine/pathology,pathology
+101071680,/25/71/443/1197,/engineering and technology/environmental biotechnology/bioremediation/bioleaching,bioleaching
+101071680,/25/67/417,/engineering and technology/environmental engineering/mining and mineral processing,mining and mineral processing
+101071680,/27/81/30021,"/agricultural sciences/agriculture, forestry, and fisheries/agriculture",agriculture
+101134907,/21/39/195,/medical and health sciences/clinical medicine/paediatrics,paediatrics
+101113669,/25/73/453/58525161,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors",sensors
+101071418,/23/47/305/967,/natural sciences/computer and information sciences/internet/internet of things,internet of things
+101113295,/21/39/225/1475,/medical and health sciences/clinical medicine/oncology/bladder cancer,bladder cancer
+101113295,/21/39/223,/medical and health sciences/clinical medicine/surgery,surgery
+101113295,/21/39/185,/medical and health sciences/clinical medicine/anaesthesiology,anaesthesiology
+101113904,/21/39/223,/medical and health sciences/clinical medicine/surgery,surgery
+101113904,/25/73/453/58525161/44113014,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors/optical sensors",optical sensors
+101102760,/23/47/295/917,/natural sciences/computer and information sciences/computer security/cryptography,cryptography
+101071724,/21/33/30011/623,/medical and health sciences/health sciences/health care services/eHealth,eHealth
+101071724,/23/47/295/917,/natural sciences/computer and information sciences/computer security/cryptography,cryptography
+101071560,/23/43/251/1077,/natural sciences/physical sciences/optics/spectroscopy,spectroscopy
+101072302,/29/97/67681549/64785222,/social sciences/political sciences/political transitions/revolutions,revolutions
+101072302,/23/51/359/1065,/natural sciences/mathematics/pure mathematics/geometry,geometry
+101071659,/21/35/145,/medical and health sciences/basic medicine/pathology,pathology
+101071659,/21/35/161,/medical and health sciences/basic medicine/physiology,physiology
+101071659,/25/59/379/40683644,/engineering and technology/other engineering and technologies/microtechnology/organ on a chip,organ on a chip
+101113978,/29/101/1363/1769,/social sciences/sociology/gender studies/gender equality,gender equality
+101113978,/25/67/425,/engineering and technology/environmental engineering/energy and fuels,energy and fuels
+101113993,/25/67/425,/engineering and technology/environmental engineering/energy and fuels,energy and fuels
+101114173,/25/67/425,/engineering and technology/environmental engineering/energy and fuels,energy and fuels
+101114321,/29/101/553/1353,/social sciences/sociology/demography/mortality,mortality
+101072279,/29/101/553/1353,/social sciences/sociology/demography/mortality,mortality
+101113961,/21/35/159/79909316,/medical and health sciences/basic medicine/pharmacology and pharmacy/drug discovery,drug discovery
+101113961,/23/47/299/951,/natural sciences/computer and information sciences/data science/big data,big data
+101113961,/23/47/299/939,/natural sciences/computer and information sciences/data science/natural language processing,natural language processing
+101113961,/23/47/297/935/61878528,/natural sciences/computer and information sciences/artificial intelligence/computer vision/image recognition,image recognition
+101113961,/23/47/297/933,/natural sciences/computer and information sciences/artificial intelligence/machine learning,machine learning
+101121182,/29/97/67681549/33870553,/social sciences/political sciences/political transitions/terrorism,terrorism
+101121182,/29/89/511,/social sciences/law/criminology,criminology
+101113615,/23/47/297/933/1589,/natural sciences/computer and information sciences/artificial intelligence/machine learning/deep learning,deep learning
+101113839,/25/75/471/1251,/engineering and technology/mechanical engineering/thermodynamic engineering/heat engineering,heat engineering
+101113839,/23/43/259/777,/natural sciences/physical sciences/electromagnetism and electronics/semiconductivity,semiconductivity
+101069625,/21/39/223,/medical and health sciences/clinical medicine/surgery,surgery
+101069625,/21/35/159/653/8052398,/medical and health sciences/basic medicine/pharmacology and pharmacy/pharmaceutical drugs/antibiotics,antibiotics
+101071830,/25/63/399,/engineering and technology/materials engineering/textiles,textiles
+101113831,/25/63/409,/engineering and technology/materials engineering/colors,colors
+101071850,/29/101/553/1353,/social sciences/sociology/demography/mortality,mortality
+101071850,/21/35/153/635,/medical and health sciences/basic medicine/neurology/stroke,stroke
+101114385,/25/73/453/58525161/66357197,"/engineering and technology/electrical engineering, electronic engineering, information engineering/electronic engineering/sensors/biosensors",biosensors
+101114385,/29/101/553/1353,/social sciences/sociology/demography/mortality,mortality
+101114385,/21/35/153/635,/medical and health sciences/basic medicine/neurology/stroke,stroke
+101071747,/25/73/30020/455/1221/73074801/1711,"/engineering and technology/electrical engineering, electronic engineering, information engineering/information engineering/telecommunications/telecommunications networks/mobile network/5G",5G
+101071747,/25/63/387,/engineering and technology/materials engineering/composites,composites
+101071747,/23/53/365/30816592,/natural sciences/chemical sciences/inorganic chemistry/post-transition metals,post-transition metals
+101114041,/29/91/523/1307,/social sciences/economics and business/business and management/business models,business models
+101114041,/25/67/425/1169/1685/98939167,/engineering and technology/environmental engineering/energy and fuels/renewable energy/solar energy/photovoltaic,photovoltaic
+101114564,/23/53/363/1103,/natural sciences/chemical sciences/organic chemistry/alcohols,alcohols
+101114564,/25/67/425,/engineering and technology/environmental engineering/energy and fuels,energy and fuels
+101072034,/27/81/30021/499/1287,"/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",fruit growing
+101071988,/29/91/523/1313,/social sciences/economics and business/business and management/employment,employment
+101072294,/25/67/89023697/1183,/engineering and technology/environmental engineering/water treatment processes/wastewater treatment processes,wastewater treatment processes
+101072294,/23/49/315/997,/natural sciences/biological sciences/biochemistry/biomolecules,biomolecules
+101072294,/25/61/383/1147,/engineering and technology/industrial biotechnology/biomaterials/bioplastics,bioplastics
+101113683,/25/67/89023697/1183,/engineering and technology/environmental engineering/water treatment processes/wastewater treatment processes,wastewater treatment processes
+101113683,/25/67/52713081,/engineering and technology/environmental engineering/carbon capture engineering,carbon capture engineering
+101113683,/25/61/383/1147,/engineering and technology/industrial biotechnology/biomaterials/bioplastics,bioplastics
+101113683,/25/61/383/1159,/engineering and technology/industrial biotechnology/biomaterials/biofuels,biofuels
+101112701,/25/75/471,/engineering and technology/mechanical engineering/thermodynamic engineering,thermodynamic engineering
+101112701,/29/91/523/61851014,/social sciences/economics and business/business and management/innovation management,innovation management
+101114261,/29/91/523/61851014,/social sciences/economics and business/business and management/innovation management,innovation management
+101114261,/21/39/30013,/medical and health sciences/clinical medicine/hepatology,hepatology
+101114484,/29/91/523/61851014,/social sciences/economics and business/business and management/innovation management,innovation management
+101114484,/29/101/553/1357,/social sciences/sociology/demography/fertility,fertility
+101097010,/29/91/523/61851014,/social sciences/economics and business/business and management/innovation management,innovation management
