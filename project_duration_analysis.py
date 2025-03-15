@@ -77,28 +77,74 @@ app_ui = ui.page_fluid(
         full_screen=True
     ),
     
-    # Histogram section
+    # Add Trend Analysis card
     ui.card(
-        ui.card_header("Project Duration Distribution"),
-        ui.output_ui("duration_hist"),  # Changed from plot_output
-        ui.card(
-            ui.card_header("Statistical Insights:"),
-            ui.tags.ul(
-                ui.tags.li("Projects typically last between 12-24 months, with a mean duration shown above."),
-                ui.tags.li("The distribution shows distinct clusters at 12-18 months and 24-30 months, suggesting common project timeframes."),
-                ui.tags.li("There's a considerable spread in project durations, indicating diverse project scopes."),
-                ui.tags.li("The interquartile range (IQR) reveals that the middle 50% of projects vary by about 1 year in duration.")
-            ),
-            class_="mt-4 bg-blue-50"
-        ),
-        ui.card(
-            ui.card_header("Trend Analysis:"),
-            ui.output_ui("trend_analysis"),
-            class_="mt-4 bg-green-50"
-        ),
+        ui.card_header("Trend Analysis"),
+        ui.output_ui("trend_analysis"),
+        class_="mt-4",
         full_screen=True
-    )
+    ),
+    
+    # Add Duration Distribution card
+    ui.card(
+        ui.card_header("Duration Distribution"),
+        ui.output_ui("duration_plot"),  # Changed from output_plot to output_ui
+        class_="mt-4",
+        full_screen=True
+    ),
 )
+
+# Move perform_trend_analysis outside server function
+def perform_trend_analysis(durations):
+    # Identify clusters in the data using KMeans
+    from sklearn.cluster import KMeans
+    
+    # Convert durations to 2D array for KMeans
+    X = durations.reshape(-1, 1)
+    
+    # Determine optimal number of clusters (simplified)
+    k = min(3, len(durations))  # 3 clusters or less if we have less data points
+    
+    skew_str = ""
+    multimodal_str = ""
+    cluster_analysis = ""
+    
+    if len(durations) >= 5:  # Only perform clustering with enough data
+        kmeans = KMeans(n_clusters=k, random_state=42).fit(X)
+        centers = kmeans.cluster_centers_.flatten()
+        centers_str = ", ".join([f"{center:.1f} months" for center in sorted(centers)])
+        
+        # Check for bimodal distribution
+        if k >= 2 and len(durations) >= 10:
+            # Calculate Hartigan's dip test for unimodality
+            try:
+                from diptest import diptest
+                dip, pval = diptest(durations)
+                is_multimodal = pval < 0.05
+                multimodal_str = f"The distribution appears to be {'multimodal' if is_multimodal else 'unimodal'}."
+            except:
+                multimodal_str = ""
+        else:
+            multimodal_str = ""
+            
+        # Skewness calculation
+        skewness = stats.skew(durations)
+        if abs(skewness) < 0.5:
+            skew_str = "The distribution is approximately symmetric."
+        elif skewness > 0:
+            skew_str = f"The distribution is positively skewed (skewness: {skewness:.2f}), indicating a tail toward longer project durations."
+        else:
+            skew_str = f"The distribution is negatively skewed (skewness: {skewness:.2f}), indicating a tail toward shorter project durations."
+            
+        cluster_analysis = f"Analysis identified {k} potential duration clusters centered at {centers_str}."
+    else:
+        cluster_analysis = "Insufficient data for cluster analysis."
+        
+    return {
+        "cluster_analysis": cluster_analysis,
+        "multimodal_str": multimodal_str,
+        "skew_str": skew_str
+    }
 
 # Define the server
 def server(input, output, session):
@@ -217,165 +263,33 @@ def server(input, output, session):
         return f"{stats_data['cv']:.2f}% (Measures relative variability)"
     
     @render.ui
-    def duration_hist():
-        if len(durations) == 0:
-            # Return empty figure if no data
-            fig = go.Figure()
-            fig.update_layout(
-                title='No valid project duration data available',
-                xaxis_title='Duration (months)',
-                yaxis_title='Number of Projects'
-            )
-            # Convert the Plotly figure to HTML
-            return ui.HTML(fig.to_html(include_plotlyjs="cdn"))
-            
-        # Create histogram with density curve and trend visualization
-        fig = make_subplots(rows=2, cols=1, row_heights=[0.7, 0.3],
-                          subplot_titles=("Duration Histogram", "Distribution Analysis"),
-                          vertical_spacing=0.15)
+    def trend_analysis():
+        # Get analysis results
+        analysis_results = perform_trend_analysis(durations)
         
-        # Add histogram
-        fig.add_trace(go.Histogram(
-            x=durations,
-            name='Project Count',
-            opacity=0.7,
-            marker=dict(color='royalblue'),
-            nbinsx=15,  # Optimized bin count
-            histnorm=''  # Use count instead of density
-        ), row=1, col=1)
-        
-        # Add KDE (Kernel Density Estimate) curve
-        kde_x = np.linspace(np.min(durations), np.max(durations), 100)
-        kde = stats.gaussian_kde(durations)
-        kde_y = kde(kde_x) * len(durations) * (np.max(durations) - np.min(durations)) / 15
-        
-        fig.add_trace(go.Scatter(
-            x=kde_x,
-            y=kde_y,
-            mode='lines',
-            name='Density Curve',
-            line=dict(color='red', width=2)
-        ), row=1, col=1)
-        
-        # Add vertical lines for yearly markers
-        for year in range(1, 6):
-            year_months = year * 12
-            if year_months >= np.min(durations) and year_months <= np.max(durations):
-                fig.add_vline(
-                    x=year_months, 
-                    line_width=1, 
-                    line_dash="dash", 
-                    line_color="gray",
-                    annotation_text=f"{year} Year{'s' if year > 1 else ''}",
-                    annotation_position="top",
-                    row=1, col=1
-                )
-        
-        # Add box plot for distribution visualization
-        fig.add_trace(go.Box(
-            x=durations,
-            name='Duration Distribution',
-            boxpoints='all',
-            jitter=0.3,
-            pointpos=-1.8,
-            marker=dict(color='royalblue'),
-            line=dict(color='darkblue')
-        ), row=2, col=1)
-        
-        # Add layout details
-        fig.update_layout(
-            title='Project Duration Distribution with Trend Analysis',
-            showlegend=True,
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="right",
-                x=0.99
-            ),
-            margin=dict(t=50, b=50, l=50, r=50),
-            height=700  # Increase height to accommodate both plots
+        # Return trend analysis insights
+        return ui.tags.div(
+            ui.tags.p(analysis_results["cluster_analysis"]),
+            ui.tags.p(analysis_results["multimodal_str"]),
+            ui.tags.p(analysis_results["skew_str"]),
+            ui.tags.p(f"The coefficient of variation is {stats_data['cv']:.2f}%, indicating {'high' if stats_data['cv'] > 25 else 'moderate' if stats_data['cv'] > 10 else 'low'} variability in project durations."),
+            ui.tags.p("")
         )
-        
-        # Update x-axis titles
-        fig.update_xaxes(title_text='Duration (months)', row=1, col=1)
-        fig.update_xaxes(title_text='Duration (months)', row=2, col=1)
-        
-        # Update y-axis titles
-        fig.update_yaxes(title_text='Number of Projects', row=1, col=1)
-        fig.update_yaxes(title_text='', row=2, col=1)
-        
-        # Add statistics annotations
-        fig.add_annotation(
-            x=0.01,
-            y=0.95,
-            xref="paper",
-            yref="paper",
-            text=f"Mean: {stats_data['mean']:.1f} months<br>Median: {stats_data['median']:.1f} months<br>StdDev: {stats_data['std_dev']:.1f}",
-            showarrow=False,
-            font=dict(size=12),
-            align="left",
-            bgcolor="rgba(255, 255, 255, 0.8)",
-            bordercolor="black",
-            borderwidth=1,
-            borderpad=4
-        )
-        
-        # Convert the Plotly figure to HTML
-        return ui.HTML(fig.to_html(include_plotlyjs="cdn"))
     
     @render.ui
-    def trend_analysis():
-        # Identify clusters in the data using KMeans
-        from sklearn.cluster import KMeans
+    def duration_plot():
+        import plotly.express as px
+        import plotly.offline as offline
         
-        # Convert durations to 2D array for KMeans
-        X = durations.reshape(-1, 1)
+        # Create histogram
+        fig = px.histogram(durations, x=durations, nbins=30, title="Distribution of Project Durations (Months)")
         
-        # Determine optimal number of clusters (simplified)
-        k = min(3, len(durations))  # 3 clusters or less if we have less data points
+        # Generate HTML representation of the plot
+        plot_html = offline.plot(fig, include_plotlyjs=True, output_type='div')
         
-        if len(durations) >= 5:  # Only perform clustering with enough data
-            kmeans = KMeans(n_clusters=k, random_state=42).fit(X)
-            centers = kmeans.cluster_centers_.flatten()
-            centers_str = ", ".join([f"{center:.1f} months" for center in sorted(centers)])
-            
-            # Check for bimodal distribution
-            if k >= 2 and len(durations) >= 10:
-                # Calculate Hartigan's dip test for unimodality
-                try:
-                    from diptest import diptest
-                    dip, pval = diptest(durations)
-                    is_multimodal = pval < 0.05
-                    multimodal_str = f"The distribution appears to be {'multimodal' if is_multimodal else 'unimodal'}."
-                except:
-                    multimodal_str = ""
-            else:
-                multimodal_str = ""
-                
-            # Skewness calculation
-            skewness = stats.skew(durations)
-            if abs(skewness) < 0.5:
-                skew_str = "The distribution is approximately symmetric."
-            elif skewness > 0:
-                skew_str = f"The distribution is positively skewed (skewness: {skewness:.2f}), indicating a tail toward longer project durations."
-            else:
-                skew_str = f"The distribution is negatively skewed (skewness: {skewness:.2f}), indicating a tail toward shorter project durations."
-                
-            cluster_analysis = f"Analysis identified {k} potential duration clusters centered at {centers_str}."
-        else:
-            cluster_analysis = "Insufficient data for cluster analysis."
-            multimodal_str = ""
-            skew_str = ""
-        
-        # Trend analysis insights
-        return ui.tags.div(
-            ui.tags.p(cluster_analysis),
-            ui.tags.p(multimodal_str),
-            ui.tags.p(skew_str),
-            ui.tags.p(f"The coefficient of variation is {stats_data['cv']:.2f}%, indicating {'high' if stats_data['cv'] > 25 else 'moderate' if stats_data['cv'] > 10 else 'low'} variability in project durations."),
-            ui.tags.p("The box plot shows the distribution's central tendency and identifies potential outliers in project durations.")
-        )
-    
+        # Return the HTML content
+        return ui.HTML(plot_html)
+
 # Create and run the app
 app = App(app_ui, server)
 
