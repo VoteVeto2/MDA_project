@@ -2,7 +2,7 @@ from shiny import App, ui, render, reactive
 import pandas as pd
 import os
 from pathlib import Path
-import asyncio # Required for pyvis_display
+import asyncio 
 
 # Assuming interactive_graph_visualization.py is in the same directory or accessible in PYTHONPATH
 from interactive_graph_visualization import create_interactive_heterogeneous_graph
@@ -30,9 +30,7 @@ def load_data_reactive(): # Renamed to avoid confusion with a regular function
         
         org_df_cleaned = org_df.dropna(subset=['name', 'organisationID'])
         
-        # Ensure organisationID is string type for choices and consistency
-        # Correct astype usage: column_name: new_type
-        org_options_df = org_df_cleaned[['name', 'organisationID']].copy() # Use .copy() to avoid SettingWithCopyWarning
+        org_options_df = org_df_cleaned[['name', 'organisationID']].copy() 
         org_options_df['organisationID'] = org_options_df['organisationID'].astype(str)
         org_options_df = org_options_df.drop_duplicates(subset=['organisationID'])
 
@@ -41,15 +39,24 @@ def load_data_reactive(): # Renamed to avoid confusion with a regular function
         
         organization_choices = pd.Series(org_options_df.display_name.values, index=org_options_df.organisationID).to_dict()
 
-        # Also ensure the main org_df has string organisationID for consistent filtering later
         org_df['organisationID'] = org_df['organisationID'].astype(str)
+
+        # Calculate Top 10 organizations by project participation
+        if 'projectID' in org_df.columns:
+            org_project_counts = org_df['organisationID'].value_counts()
+            top_10_org_ids_list = org_project_counts.nlargest(10).index.astype(str).tolist()
+        else:
+            print("Warning: 'projectID' column not found in organization data for Top 10 calculation.")
+            top_10_org_ids_list = []
+
 
         return {
             "org_df": org_df,
             "proj_df": proj_df,
             "topic_df": topic_df,
             "organization_choices": organization_choices,
-            "all_org_ids": org_options_df.organisationID.tolist()
+            "all_org_ids": org_options_df.organisationID.tolist(),
+            "top_10_org_ids": top_10_org_ids_list
         }
     except FileNotFoundError as e:
         print(f"ERROR: Data file not found: {e}")
@@ -62,20 +69,26 @@ def load_data_reactive(): # Renamed to avoid confusion with a regular function
         import traceback
         traceback.print_exc()
         return {"org_df": pd.DataFrame(), "proj_df": pd.DataFrame(), "topic_df": pd.DataFrame(), "organization_choices": {"Error": f"Unexpected error: {e}"}, "all_org_ids": []}
-
 # --- Shiny UI Definition ---
 app_ui = ui.page_fluid(
     ui.panel_title("Interactive Heterogeneous Network Visualization"),
     ui.layout_sidebar(
         ui.sidebar(
-            ui.input_selectize(
-                "selected_orgs_ids", 
-                "Select Organizations:",
-                choices={}, 
-                multiple=True
+            ui.card(
+                ui.card_header("Graph Controls"),
+                ui.input_selectize(
+                    "selected_orgs_ids", 
+                    "Select Organizations:",
+                    choices={}, 
+                    multiple=True
+                ),
+                ui.input_action_button("update_graph", "Update Graph", class_="btn-primary w-100 mb-2"),
+                ui.hr(),
+                ui.h5("Quick Actions"),
+                ui.input_action_button("select_top_10", "Select Top 10 Orgs (by Projects)", class_="btn-info w-100 mb-2"),
+                ui.input_action_button("clear_selection", "Clear Selection & Graph", class_="btn-warning w-100"),
             ),
-            ui.input_action_button("update_graph", "Update Graph", class_="btn-primary"),
-            title="Controls"
+            # title="Controls" # Replaced by card header
         ),
         ui.output_ui("pyvis_graph_display"),
         ui.output_text_verbatim("status_message")
@@ -108,6 +121,25 @@ def server(input, output, session):
 
     graph_html_file_reactive = reactive.value(None) # Stores the relative path for the iframe src
     current_status_message = reactive.value("Please select organizations and click 'Update Graph'.") # Initialize status message
+
+    @reactive.effect
+    @reactive.event(input.select_top_10)
+    def _handle_select_top_10():
+        current_data = loaded_data_reactive_calc()
+        top_10_ids = current_data.get("top_10_org_ids", [])
+        if top_10_ids:
+            ui.update_selectize("selected_orgs_ids", selected=top_10_ids)
+            current_status_message.set(f"{len(top_10_ids)} Top organizations selected. Click 'Update Graph'.")
+        else:
+            current_status_message.set("Could not determine Top 10 organizations. Data might be missing.")
+
+    @reactive.effect
+    @reactive.event(input.clear_selection)
+    def _handle_clear_selection():
+        ui.update_selectize("selected_orgs_ids", selected=[]) # Clear dropdown
+        graph_html_file_reactive.set(None) # Clear the displayed graph
+        current_status_message.set("Selection cleared. Graph removed.")
+
 
     @reactive.effect
     @reactive.event(input.update_graph)
@@ -214,4 +246,4 @@ app = App(
 
 # To run this app:
 # Install dependencies: pip install shiny pandas openpyxl pyvis networkx
-# Run from terminal: python -m shiny run --reload app.py 
+# Run from terminal: python -m shiny run app.py
