@@ -77,8 +77,8 @@ def create_interactive_heterogeneous_graph(org_df: pd.DataFrame, proj_df: pd.Dat
         
         print(f"Interactive graph has {len(net.nodes)} nodes and {len(net.edges)} edges.")
 
-        # Network options with IMMEDIATE physics disable after initial layout
-        json_options = """
+        # Corrected JSON options string
+        json_options_physics = """
         {
           "nodes": {
             "font": {
@@ -87,7 +87,7 @@ def create_interactive_heterogeneous_graph(org_df: pd.DataFrame, proj_df: pd.Dat
           },
           "edges": {
             "width": 0.5,
-            "color": { "color": "#D3D3D3", "opacity": 0.3 },
+            "color": { "color": "#D3D3D3", "highlight": "#000000", "hover": "#000000" },
             "smooth": {
                 "type": "continuous"
             }
@@ -97,15 +97,13 @@ def create_interactive_heterogeneous_graph(org_df: pd.DataFrame, proj_df: pd.Dat
             "hoverConnectedEdges": true,
             "navigationButtons": true,
             "keyboard": true,
-            "tooltipDelay": 200,
-            "dragNodes": true,
-            "dragView": true
+            "tooltipDelay": 200
           },
           "physics": {
             "enabled": true,
-            "stabilization": { 
+            "stabilization": {
               "enabled": true,
-              "iterations": 500,
+              "iterations": 1000,
               "updateInterval": 50,
               "onlyDynamicEdges": false,
               "fit": true
@@ -117,13 +115,13 @@ def create_interactive_heterogeneous_graph(org_df: pd.DataFrame, proj_df: pd.Dat
               "springConstant": 0.08,
               "damping": 0.4
             },
-            "solver": "forceAtlas2Based",
             "minVelocity": 0.75,
-            "maxVelocity": 5
+            "solver": "forceAtlas2Based",
+            "adaptiveTimestep": true
           }
         }
         """
-        net.set_options(json_options)
+        net.set_options(json_options_physics)
         
         # Enhanced JavaScript for static network and transparency effects
         enhanced_js = """
